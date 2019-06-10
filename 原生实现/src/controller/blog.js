@@ -18,6 +18,32 @@ const getList = (author, keyword) => {
     ]
 }
 
+const getDetail = (id) => {
+    return {
+        id: 2,
+        title: '文章B',
+        content: '内容B',
+        author: 'lisi',
+        createTime: 1559812354854
+    }
+}
+
+const newBlog = (blogData = {}) => {
+    // blogData是一个博客对象，包含title content等属性
+    return {
+        id: 3 // 表示新建博客，插入到数据表里面的id
+    }
+}
+
+const updateBlog = (id, blogData = {}) => {
+    // id是更新博客的id
+    // blogData是一个博客对象，包含title content等属性
+    return true
+}
+
 module.exports = {
-    getList
+    getList,
+    getDetail,
+    newBlog,
+    updateBlog
 }

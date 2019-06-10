@@ -1,31 +1,37 @@
-const { getList } = require('./../controller/blog');
+const { 
+    getList,
+    getDetail,
+    newBlog,
+    updateBlog } = require('./../controller/blog');
 const { SuccessModel, ErrorModel } = require('./../modle/resModle');
 
 const handleBlogRouter = (req, res) => {
     const method = req.method;
+    const id = req.query.id;
     
     if (method === 'GET' && res.path === '/api/blog/list') {
         const author = req.query.author || '';
         const keyword = req.query.keyword || '';
         const listData = getList(author, keyword);
-        return new SuccessModel(listData)
+        return new SuccessModel(listData);
     }
 
     if (method === 'GET' && res.path === '/api/blog/detail') {
-        return {
-            msg: '这是获取博客详情的接口'
-        }
+        const deatilData = getDetail(id);
+        return new SuccessModel(deatilData);
     }
 
     if (method === 'POST' && res.path === '/api/blog/new') {
-        return {
-            msg: '这是新建博客的接口'
-        }
+        const data = newBlog(req.body);
+        return new SuccessModel(data);
     }
 
     if (method === 'POST' && res.path === '/api/blog/update') {
-        return {
-            msg: '这是更新博客的接口'
+        const result = updateBlog(id, req.body);
+        if (result) {
+            return new SuccessModel();
+        } else {
+            return new ErrorModel('更新失败');
         }
     }
 
