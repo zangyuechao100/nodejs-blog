@@ -1,5 +1,6 @@
-const slice = Array.prototype.slice;
-const http = require('http');
+const http = require('http')
+const slice = Array.prototype.slice
+
 class ExpressLike {
 
     constructor () {
@@ -51,7 +52,7 @@ class ExpressLike {
         curRoutes = curRoutes.concat(this.routes[method])
 
         curRoutes.forEach(routeInfo => {
-            if (url.inexOf(routeInfo.path) === 0) {
+            if (url.indexOf(routeInfo.path) === 0) {
                 stack = stack.concat(routeInfo.stack)
             }
         })
