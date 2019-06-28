@@ -8,6 +8,9 @@ const logger = require('koa-logger')
 const session = require('koa-generic-session')
 const redisStore = require('koa-redis')
 const REDIS_CONF = require('./conf/db')
+const path = require('path')
+const fs = require('fs')
+const morgan = require('koa-morgan')
 
 const blog = require('./routes/blog')
 const user = require('./routes/user')
@@ -32,6 +35,21 @@ app.use(session({
     all: `${REDIS_CONF.host}:${REDIS_CONF.port}` 
   })
 }))
+
+const ENV = process.env.NODE_ENV
+if (ENV !== 'production') {
+  // 开发环境 / 测试环境
+  app.use(logger('dev'));
+} else {
+  // 线上环境
+  const logFileName = path.join(__dirname, 'logs', 'access.log')
+  const writeStream = fs.createWriteStream(logFileName, {
+    flags: 'a'
+  })
+  app.use(morgan('combined', {
+    stream: writeStream
+  }))
+}
 
 app.use(require('koa-static')(__dirname + '/public'))
 
